@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* CSS styles tetap sama seperti sebelumnya */
         :root {
             --primary: #6366f1;
             --secondary: #8b5cf6;
@@ -37,8 +39,15 @@
         }
 
         @keyframes fly {
-            0%, 100% { transform: translateY(0px) rotate(0deg); }
-            50% { transform: translateY(-8px) rotate(-5deg); }
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-8px) rotate(-5deg);
+            }
         }
 
         .nav-link {
@@ -83,7 +92,7 @@
         .hero-mini h2 {
             font-size: 2.5rem;
             font-weight: 800;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
             position: relative;
             margin: 0;
         }
@@ -185,14 +194,16 @@
             margin-bottom: 20px;
         }
 
-        .form-control, .form-select {
+        .form-control,
+        .form-select {
             border-radius: 10px;
             padding: 10px 15px;
             border: 2px solid #e5e7eb;
             transition: all 0.3s ease;
         }
 
-        .form-control:focus, .form-select:focus {
+        .form-control:focus,
+        .form-select:focus {
             border-color: var(--primary);
             box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
         }
@@ -399,7 +410,7 @@
             .hero-mini h2 {
                 font-size: 1.8rem;
             }
-            
+
             .hero-mini p {
                 font-size: 0.95rem;
             }
@@ -424,6 +435,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -440,13 +452,28 @@
             animation-fill-mode: both;
         }
 
-        .flight-row:nth-child(1) { animation-delay: 0.1s; }
-        .flight-row:nth-child(2) { animation-delay: 0.2s; }
-        .flight-row:nth-child(3) { animation-delay: 0.3s; }
-        .flight-row:nth-child(4) { animation-delay: 0.4s; }
-        .flight-row:nth-child(5) { animation-delay: 0.5s; }
+        .flight-row:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .flight-row:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .flight-row:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .flight-row:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .flight-row:nth-child(5) {
+            animation-delay: 0.5s;
+        }
     </style>
 </head>
+
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
@@ -476,9 +503,12 @@
                         </a>
                     </li>
                     <li class="nav-item ms-3">
-                        <a href="/logout" class="btn btn-logout">
-                            <i class="fas fa-sign-out-alt me-2"></i>Logout
-                        </a>
+                        <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                            @csrf
+                            <button type="submit" class="btn btn-logout">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </div>
@@ -507,7 +537,7 @@
                     <div class="stats-icon primary">
                         <i class="fas fa-plane"></i>
                     </div>
-                    <h3>156</h3>
+                    <h3>{{ $penerbangans->count() }}</h3>
                     <p><i class="fas fa-arrow-up me-1"></i>Total Penerbangan</p>
                 </div>
             </div>
@@ -516,7 +546,7 @@
                     <div class="stats-icon success">
                         <i class="fas fa-map-marked-alt"></i>
                     </div>
-                    <h3>24</h3>
+                    <h3>{{ $kotas->count() }}</h3>
                     <p><i class="fas fa-arrow-up me-1"></i>Destinasi Tersedia</p>
                 </div>
             </div>
@@ -539,44 +569,45 @@
                 <i class="fas fa-filter me-2 text-primary"></i>
                 Filter Penerbangan
             </h5>
-            <div class="row g-3">
-                <div class="col-md-3">
-                    <label class="form-label fw-semibold">
-                        <i class="fas fa-map-marker-alt me-2 text-primary"></i>Kota Asal
-                    </label>
-                    <select class="form-select">
-                        <option value="">Semua Kota</option>
-                        <option>Jakarta</option>
-                        <option>Surabaya</option>
-                        <option>Bali</option>
-                        <option>Medan</option>
-                    </select>
+            <form action="{{ route('penerbangan.search') }}" method="POST" id="searchForm">
+                @csrf
+                <div class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">
+                            <i class="fas fa-map-marker-alt me-2 text-primary"></i>Kota Asal
+                        </label>
+                        <select class="form-select" name="asal" id="asal">
+                            <option value="">Semua Kota</option>
+                            @foreach($kotas as $kota)
+                            <option value="{{ $kota->nama_kota }}">{{ $kota->nama_kota }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">
+                            <i class="fas fa-map-marker-alt me-2 text-success"></i>Kota Tujuan
+                        </label>
+                        <select class="form-select" name="tujuan" id="tujuan">
+                            <option value="">Semua Kota</option>
+                            @foreach($kotas as $kota)
+                            <option value="{{ $kota->nama_kota }}">{{ $kota->nama_kota }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label fw-semibold">
+                            <i class="fas fa-calendar me-2 text-warning"></i>Tanggal
+                        </label>
+                        <input type="date" class="form-control" name="tanggal" id="tanggal">
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label d-block">&nbsp;</label>
+                        <button type="submit" class="btn btn-gradient w-100">
+                            <i class="fas fa-search me-2"></i>Cari
+                        </button>
+                    </div>
                 </div>
-                <div class="col-md-3">
-                    <label class="form-label fw-semibold">
-                        <i class="fas fa-map-marker-alt me-2 text-success"></i>Kota Tujuan
-                    </label>
-                    <select class="form-select">
-                        <option value="">Semua Kota</option>
-                        <option>Jakarta</option>
-                        <option>Surabaya</option>
-                        <option>Bali</option>
-                        <option>Medan</option>
-                    </select>
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label fw-semibold">
-                        <i class="fas fa-calendar me-2 text-warning"></i>Tanggal
-                    </label>
-                    <input type="date" class="form-control">
-                </div>
-                <div class="col-md-3">
-                    <label class="form-label d-block">&nbsp;</label>
-                    <button class="btn btn-gradient w-100">
-                        <i class="fas fa-search me-2"></i>Cari
-                    </button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 
@@ -614,178 +645,60 @@
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="flightTableBody">
+                        @forelse($penerbangans as $index => $penerbangan)
                         <tr class="flight-row">
                             <td>
-                                <span class="code-badge">WWDT-101</span>
+                                <span class="code-badge">{{ $penerbangan->kode_penerbangan }}</span>
                             </td>
                             <td>
                                 <span class="location-badge">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Jakarta
+                                    <i class="fas fa-map-marker-alt me-1"></i>{{ $penerbangan->asal }}
                                 </span>
                             </td>
                             <td>
                                 <span class="location-badge">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Surabaya
+                                    <i class="fas fa-map-marker-alt me-1"></i>{{ $penerbangan->tujuan }}
                                 </span>
                             </td>
                             <td>
                                 <span class="time-badge">
-                                    <i class="far fa-calendar me-1"></i>25 Okt 2025, 08:00
+                                    <i class="far fa-calendar me-1"></i>{{ \Carbon\Carbon::parse($penerbangan->waktu_keberangkatan)->format('d M Y, H:i') }}
                                 </span>
                             </td>
                             <td>
-                                <span class="price-highlight">Rp 850.000</span>
+                                <span class="price-highlight">Rp {{ number_format($penerbangan->harga, 0, ',', '.') }}</span>
                             </td>
                             <td>
-                                <a href="/penerbangan/1" class="btn btn-detail btn-sm">
+                                <a href="{{ route('penerbangan.show', $penerbangan->id) }}" class="btn btn-detail btn-sm">
                                     <i class="fas fa-info-circle me-1"></i>Detail
                                 </a>
                             </td>
                         </tr>
-                        <tr class="flight-row">
-                            <td>
-                                <span class="code-badge">WWDT-102</span>
-                            </td>
-                            <td>
-                                <span class="location-badge">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Jakarta
-                                </span>
-                            </td>
-                            <td>
-                                <span class="location-badge">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Bali
-                                </span>
-                            </td>
-                            <td>
-                                <span class="time-badge">
-                                    <i class="far fa-calendar me-1"></i>25 Okt 2025, 10:30
-                                </span>
-                            </td>
-                            <td>
-                                <span class="price-highlight">Rp 1.200.000</span>
-                            </td>
-                            <td>
-                                <a href="/penerbangan/2" class="btn btn-detail btn-sm">
-                                    <i class="fas fa-info-circle me-1"></i>Detail
-                                </a>
+                        @empty
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                <div class="empty-state">
+                                    <i class="fas fa-plane-slash"></i>
+                                    <h5>Tidak Ada Penerbangan</h5>
+                                    <p>Belum ada jadwal penerbangan yang tersedia.</p>
+                                </div>
                             </td>
                         </tr>
-                        <tr class="flight-row">
-                            <td>
-                                <span class="code-badge">WWDT-103</span>
-                            </td>
-                            <td>
-                                <span class="location-badge">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Surabaya
-                                </span>
-                            </td>
-                            <td>
-                                <span class="location-badge">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Medan
-                                </span>
-                            </td>
-                            <td>
-                                <span class="time-badge">
-                                    <i class="far fa-calendar me-1"></i>26 Okt 2025, 14:00
-                                </span>
-                            </td>
-                            <td>
-                                <span class="price-highlight">Rp 1.500.000</span>
-                            </td>
-                            <td>
-                                <a href="/penerbangan/3" class="btn btn-detail btn-sm">
-                                    <i class="fas fa-info-circle me-1"></i>Detail
-                                </a>
-                            </td>
-                        </tr>
-                        <tr class="flight-row">
-                            <td>
-                                <span class="code-badge">WWDT-104</span>
-                            </td>
-                            <td>
-                                <span class="location-badge">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Bali
-                                </span>
-                            </td>
-                            <td>
-                                <span class="location-badge">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Yogyakarta
-                                </span>
-                            </td>
-                            <td>
-                                <span class="time-badge">
-                                    <i class="far fa-calendar me-1"></i>27 Okt 2025, 09:15
-                                </span>
-                            </td>
-                            <td>
-                                <span class="price-highlight">Rp 950.000</span>
-                            </td>
-                            <td>
-                                <a href="/penerbangan/4" class="btn btn-detail btn-sm">
-                                    <i class="fas fa-info-circle me-1"></i>Detail
-                                </a>
-                            </td>
-                        </tr>
-                        <tr class="flight-row">
-                            <td>
-                                <span class="code-badge">WWDT-105</span>
-                            </td>
-                            <td>
-                                <span class="location-badge">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Medan
-                                </span>
-                            </td>
-                            <td>
-                                <span class="location-badge">
-                                    <i class="fas fa-map-marker-alt me-1"></i>Jakarta
-                                </span>
-                            </td>
-                            <td>
-                                <span class="time-badge">
-                                    <i class="far fa-calendar me-1"></i>28 Okt 2025, 16:45
-                                </span>
-                            </td>
-                            <td>
-                                <span class="price-highlight">Rp 1.100.000</span>
-                            </td>
-                            <td>
-                                <a href="/penerbangan/5" class="btn btn-detail btn-sm">
-                                    <i class="fas fa-info-circle me-1"></i>Detail
-                                </a>
-                            </td>
-                        </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>
         </div>
 
         <!-- Pagination -->
+        @if($penerbangans->hasPages())
         <div class="d-flex justify-content-center mt-4">
             <nav>
-                <ul class="pagination">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" style="border-radius: 10px 0 0 10px;">
-                            <i class="fas fa-chevron-left"></i>
-                        </a>
-                    </li>
-                    <li class="page-item active">
-                        <a class="page-link" href="#" style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); border: none;">1</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" style="color: var(--primary);">2</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" style="color: var(--primary);">3</a>
-                    </li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" style="border-radius: 0 10px 10px 0;">
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                    </li>
-                </ul>
+                {{ $penerbangans->links() }}
             </nav>
         </div>
+        @endif
     </div>
 
     <!-- Footer -->
@@ -798,5 +711,97 @@
         </div>
     </footer>
 
-    
+    <!-- JavaScript untuk AJAX Search -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch('{{ route("penerbangan.search") }}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById('flightTableBody');
+                    tableBody.innerHTML = '';
+
+                    if (data.length > 0) {
+                        data.forEach((flight, index) => {
+                            const row = document.createElement('tr');
+                            row.className = 'flight-row';
+                            row.style.animationDelay = `${(index + 1) * 0.1}s`;
+
+                            // Format tanggal
+                            const date = new Date(flight.waktu_keberangkatan);
+                            const formattedDate = date.toLocaleDateString('id-ID', {
+                                day: '2-digit',
+                                month: 'short',
+                                year: 'numeric'
+                            }) + ', ' + date.toLocaleTimeString('id-ID', {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            });
+
+                            // Format harga
+                            const formattedPrice = 'Rp ' + new Intl.NumberFormat('id-ID').format(flight.harga);
+
+                            row.innerHTML = `
+                            <td>
+                                <span class="code-badge">${flight.kode_penerbangan}</span>
+                            </td>
+                            <td>
+                                <span class="location-badge">
+                                    <i class="fas fa-map-marker-alt me-1"></i>${flight.asal}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="location-badge">
+                                    <i class="fas fa-map-marker-alt me-1"></i>${flight.tujuan}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="time-badge">
+                                    <i class="far fa-calendar me-1"></i>${formattedDate}
+                                </span>
+                            </td>
+                            <td>
+                                <span class="price-highlight">${formattedPrice}</span>
+                            </td>
+                            <td>
+                                <a href="/penerbangan/${flight.id}" class="btn btn-detail btn-sm">
+                                    <i class="fas fa-info-circle me-1"></i>Detail
+                                </a>
+                            </td>
+                        `;
+
+                            tableBody.appendChild(row);
+                        });
+                    } else {
+                        tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                <div class="empty-state">
+                                    <i class="fas fa-plane-slash"></i>
+                                    <h5>Tidak Ada Hasil Pencarian</h5>
+                                    <p>Tidak ditemukan penerbangan yang sesuai dengan kriteria Anda.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    `;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
+</body>
+
 </html>

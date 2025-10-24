@@ -19,13 +19,11 @@ class Pemesanan extends Model
         'status'
     ];
 
-    // Relasi dengan user
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Relasi dengan penerbangan
     public function penerbangan()
     {
         return $this->belongsTo(Penerbangan::class);

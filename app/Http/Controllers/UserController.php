@@ -16,10 +16,8 @@ class UserController extends Controller
         return view('admin.users', compact('users'));
     }
 
-    // Tambahkan method destroy untuk delete user
     public function destroy(Request $request)
     {
-        // Prevent user from deleting themselves
         if ($request->id == auth()->id()) {
             return redirect()->route('admin.users')->with('error', 'Tidak bisa menghapus akun sendiri!');
         }

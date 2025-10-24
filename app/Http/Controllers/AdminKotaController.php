@@ -15,7 +15,6 @@ class AdminKotaController extends Controller
 
     public function store(Request $request)
     {
-        // Tidak ada validasi - bebas input apa saja
         try {
             Kota::create([
                 'nama_kota' => $request->nama_kota,

@@ -9,38 +9,33 @@ use App\Models\Kota;
 class PenerbanganController extends Controller
 {
     public function index()
-    {
-        $penerbangans = Penerbangan::all();
+    {        
+        $penerbangans = Penerbangan::orderBy('waktu_keberangkatan', 'asc')->paginate(10); 
+
         $kotas = Kota::all();
 
-        return view('admin.dashboard', compact('penerbangans', 'kotas'));
+        return view('penerbangan.index', compact('penerbangans', 'kotas'));
     }
 
-   // Method untuk dashboard user
     public function dashboard()
     {
-        // Ambil semua data penerbangan dari database
         $penerbangans = Penerbangan::all();
-        // Ambil data kota untuk dropdown
         $kotas = Kota::all();
-        
+
         return view('dashboard', compact('penerbangans', 'kotas'));
     }
 
-    // Method untuk menampilkan detail penerbangan
     public function show($id)
     {
         try {
-            // Cari penerbangan berdasarkan ID
             $penerbangan = Penerbangan::findOrFail($id);
-            
+
             return view('penerbangan.show', compact('penerbangan'));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             abort(404, 'Penerbangan tidak ditemukan');
         }
     }
 
-    // Method untuk pencarian penerbangan
     public function search(Request $request)
     {
         $asal = $request->input('asal');
@@ -57,7 +52,6 @@ class PenerbanganController extends Controller
             $query->where('tujuan', 'like', '%' . $tujuan . '%');
         }
 
-        // Tanggal menjadi opsional
         if ($tanggal) {
             $query->whereDate('waktu_keberangkatan', $tanggal);
         }
@@ -132,7 +126,6 @@ class PenerbanganController extends Controller
             'harga' => 'required|integer|min:0',
         ]);
 
-        // Gabungkan tanggal dan jam
         $waktu_keberangkatan = $request->tanggal_keberangkatan . ' ' . $request->jam_keberangkatan;
 
         $penerbangan->update([

@@ -11,12 +11,12 @@ class Penerbangan extends Model
 
     protected $table = 'penerbangans';
     
-    // Gunakan nama kolom sesuai dengan database aktual
+    
     protected $fillable = [
-        'kode_penerbangan', // atau 'Node_penerbangan' jika itu yang sebenarnya
+        'kode_penerbangan', 
         'asal', 
         'tujuan',
-        'waktu_keberangkatan', // atau 'waku_keberangkatan' jika itu yang sebenarnya
+        'waktu_keberangkatan', 
         'harga',
         'created_at',
         'updated_at'

@@ -357,17 +357,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            Layanan
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-plane me-2"></i>Penerbangan</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-hotel me-2"></i>Hotel</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-gift me-2"></i>Paket Wisata</a></li>
-                        </ul>
-                    </li>
+                   
                     <li class="nav-item">
                         <a class="nav-link" href="#promo">Promo</a>
                     </li>

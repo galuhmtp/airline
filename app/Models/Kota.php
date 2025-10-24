@@ -15,7 +15,6 @@ class Kota extends Model
         'updated_at'
     ];
     
-    // Jika Anda ingin menambahkan relasi dengan penerbangan
     public function penerbanganAsal()
     {
         return $this->hasMany(Penerbangan::class, 'rute_asal', 'nama_kota');

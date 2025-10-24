@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class AdminPesananController extends Controller
 {
-    // Menampilkan semua data pesanan
+    
     public function index()
     {
         $pemesanans = Pemesanan::with(['user', 'penerbangan'])
@@ -17,7 +17,7 @@ class AdminPesananController extends Controller
         return view('admin.pesanan', compact('pemesanans'));
     }
 
-    // Menampilkan detail pesanan
+   
     public function show($id)
     {
         $pemesanan = Pemesanan::with(['user', 'penerbangan'])
@@ -26,7 +26,7 @@ class AdminPesananController extends Controller
         return view('admin.pesanan-detail', compact('pemesanan'));
     }
 
-    // Update status pesanan
+    
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
@@ -41,7 +41,7 @@ class AdminPesananController extends Controller
         return redirect()->back()->with('success', 'Status pesanan berhasil diupdate!');
     }
 
-    // Hapus pesanan
+   
     public function destroy($id)
     {
         $pemesanan = Pemesanan::findOrFail($id);

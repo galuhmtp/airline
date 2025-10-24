@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kota;
-use App\Models\Penerbangan; // Perbaiki namespace
+use App\Models\Penerbangan; 
 
 class AdminDashboardController extends Controller
 {

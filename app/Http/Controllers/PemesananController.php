@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 
 class PemesananController extends Controller
 {
-    // Menampilkan form pemesanan
+    
     public function create(Request $request)
     {
         $penerbangan_id = $request->query('penerbangan_id');
@@ -28,7 +28,6 @@ class PemesananController extends Controller
         return view('pemesanan.create', compact('penerbangan'));
     }
 
-    // Menyimpan data pemesanan
     public function store(Request $request)
     {
         $request->validate([
@@ -42,7 +41,6 @@ class PemesananController extends Controller
             $penerbangan = Penerbangan::findOrFail($request->penerbangan_id);
             $total_harga = $penerbangan->harga * $request->jumlah_tiket;
 
-            // Generate kode booking unik
             $kode_booking = 'WWDT-' . strtoupper(Str::random(6));
 
             $pemesanan = Pemesanan::create([
@@ -53,10 +51,10 @@ class PemesananController extends Controller
                 'jumlah_tiket' => $request->jumlah_tiket,
                 'total_harga' => $total_harga,
                 'kode_booking' => $kode_booking,
-                'status' => 'confirmed' // Langsung confirmed untuk simplicity
+                'status' => 'confirmed' 
             ]);
 
-            // Redirect ke halaman cetak tiket
+            
             return redirect()->route('pemesanan.tiket', $pemesanan->id)->with('success', 'Pemesanan berhasil dibuat!');
 
         } catch (\Exception $e) {
@@ -64,7 +62,6 @@ class PemesananController extends Controller
         }
     }
 
-    // Menampilkan daftar pemesanan user
     public function index()
     {
         $pemesanans = Pemesanan::where('user_id', Auth::id())
@@ -75,7 +72,6 @@ class PemesananController extends Controller
         return view('pemesanan.index', compact('pemesanans'));
     }
 
-    // Halaman cetak tiket
     public function tiket($id)
     {
         $pemesanan = Pemesanan::with(['penerbangan', 'user'])
@@ -85,17 +81,13 @@ class PemesananController extends Controller
         return view('pemesanan.tiket', compact('pemesanan'));
     }
 
-    // Cetak tiket (PDF)
     public function cetakTiket($id)
     {
         $pemesanan = Pemesanan::with(['penerbangan', 'user'])
             ->where('user_id', Auth::id())
             ->findOrFail($id);
             
-        // Untuk PDF, Anda bisa menggunakan package seperti dompdf
-        // return view('pemesanan.cetak-pdf', compact('pemesanan'));
         
-        // Sementara kita kembalikan view biasa dulu
         return view('pemesanan.tiket', compact('pemesanan'));
     }
 }

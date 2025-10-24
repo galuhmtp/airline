@@ -12,8 +12,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('penerbangan_id')->constrained()->onDelete('cascade');
-            $table->string('nama_penumpang'); // Pastikan ada
-            $table->string('no_hp'); // Pastikan ada
+            $table->string('nama_penumpang'); 
+            $table->string('no_hp'); 
             $table->integer('jumlah_tiket');
             $table->decimal('total_harga', 12, 2);
             $table->enum('status', ['pending', 'confirmed', 'cancelled'])->default('confirmed');

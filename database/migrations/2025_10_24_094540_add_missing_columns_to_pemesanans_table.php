@@ -30,7 +30,6 @@ return new class extends Migration
     public function down()
     {
         Schema::table('pemesanans', function (Blueprint $table) {
-            // Hapus kolom jika rollback
             $table->dropColumn(['nama_penumpang', 'no_hp', 'status', 'kode_booking']);
         });
     }
